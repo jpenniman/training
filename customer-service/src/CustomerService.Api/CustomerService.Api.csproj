@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AssemblyName>Northwind.CustomerService.Api</AssemblyName>
+        <RootNamespace>Northwind.CustomerService.Api</RootNamespace>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="../../../foundation/src/Northwind.Foundation/Northwind.Foundation.csproj" />
+    </ItemGroup>
+</Project>
