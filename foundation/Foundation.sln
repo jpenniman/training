@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DA031E94-E412-435C-A9CC-B28F05BAF205}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{3C0133B9-C272-4188-A736-D72B3416E6EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Foundation", "src\Northwind.Foundation\Northwind.Foundation.csproj", "{7EE93650-7875-4EBC-B172-215219485FB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerializationTests", "tests\SerializationTests\SerializationTests.csproj", "{D1902365-6E5B-4300-B8E5-80D75928D1F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7EE93650-7875-4EBC-B172-215219485FB1} = {DA031E94-E412-435C-A9CC-B28F05BAF205}
+		{D1902365-6E5B-4300-B8E5-80D75928D1F3} = {3C0133B9-C272-4188-A736-D72B3416E6EA}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7EE93650-7875-4EBC-B172-215219485FB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EE93650-7875-4EBC-B172-215219485FB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EE93650-7875-4EBC-B172-215219485FB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EE93650-7875-4EBC-B172-215219485FB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1902365-6E5B-4300-B8E5-80D75928D1F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1902365-6E5B-4300-B8E5-80D75928D1F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1902365-6E5B-4300-B8E5-80D75928D1F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1902365-6E5B-4300-B8E5-80D75928D1F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
