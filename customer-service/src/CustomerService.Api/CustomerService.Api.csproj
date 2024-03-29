@@ -15,5 +15,6 @@
     
     <ItemGroup>
         <ProjectReference Include="../../../foundation/src/Northwind.Foundation/Northwind.Foundation.csproj" />
+        <ProjectReference Include="..\..\..\foundation\src\Northwind.Foundation.Api\Northwind.Foundation.Api.csproj" />
     </ItemGroup>
 </Project>

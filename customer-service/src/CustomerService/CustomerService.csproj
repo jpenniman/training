@@ -14,10 +14,12 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\..\..\foundation\src\Northwind.Foundation.Server\Northwind.Foundation.Server.csproj" />
       <ProjectReference Include="..\CustomerService.Api\CustomerService.Api.csproj" />
     </ItemGroup>
     
     <ItemGroup>
+      <PackageReference Include="Mapster" Version="7.3.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.15" />
       <PackageReference Include="EFCore.NamingConventions" Version="6.0.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />

@@ -5,17 +5,24 @@ using Northwind.CustomerService.Api;
 using Northwind.CustomerService.Api.Lookup;
 using Northwind.CustomerService.Lookup;
 using Northwind.Foundation.Api;
+using Serilog;
+using Xunit.Abstractions;
 
 namespace CustomerService.Tests.Lookup;
 
-public class LookupTests : IClassFixture<PostgresDatabaseFixture>
+[Collection(nameof(DatabaseCollection))]
+public class LookupTests
 {
-    readonly PostgresDatabaseFixture _postgresDatabaseFixture;
+    readonly ITestOutputHelper _testOutput;
+    readonly CustomerPostgresDatabaseFixture _postgresDatabaseFixture;
 
-    public LookupTests(PostgresDatabaseFixture postgresDatabaseFixture)
+    public LookupTests(CustomerPostgresDatabaseFixture postgresDatabaseFixture, ITestOutputHelper testOutput)
     {
         _postgresDatabaseFixture = postgresDatabaseFixture;
-        postgresDatabaseFixture.Seed("../../../../../database/customers.sql");
+        _testOutput = testOutput;
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.TestOutput(_testOutput)
+            .CreateLogger();
     }
 
     [Fact]
@@ -27,8 +34,8 @@ public class LookupTests : IClassFixture<PostgresDatabaseFixture>
     
         ICustomerLookup customerLookup = container.GetRequiredService<ICustomerLookup>();
         
-        Response<Customer> response = await customerLookup.FindByCustomerNoAsync(new FindByCustomerNoRequest("ALFKI"));
-
+        Response<Customer> response = await customerLookup.FindByCustomerNoAsync(new FindByCustomerNumberRequest("ALFKI"));
+        
         response.IsSuccessful.Should().BeTrue();
         response.Data.Should().NotBeNull();
         response.Data?.CustomerNumber.Should().Be("ALFKI");
@@ -44,7 +51,7 @@ public class LookupTests : IClassFixture<PostgresDatabaseFixture>
     
         ICustomerLookup customerLookup = container.GetRequiredService<ICustomerLookup>();
         
-        PagedResponse<Customer> response = await customerLookup.FindByCompanyNameAsync(new FindByCompanyNameRequest("An"));
+        PagedResponse<CustomerLookupResult> response = await customerLookup.FindByCompanyNameAsync(new FindByCompanyNameRequest("An"));
 
         response.IsSuccessful.Should().BeTrue();
         response.Data.Should().NotBeNull();

@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\Northwind.Foundation.Api\Northwind.Foundation.Api.csproj" />
       <ProjectReference Include="..\..\src\Northwind.Foundation\Northwind.Foundation.csproj" />
     </ItemGroup>
 

@@ -2,8 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.Configuration;
 
-namespace Northwind.Foundation.Grpc;
+namespace Northwind.Foundation.Server;
 
+/// <summary>
+/// Allows gRPC services to be resolved by interface instead of implementation.
+/// </summary>
 sealed class DependencyInjectionServiceBinder : ServiceBinder
 {
     readonly IServiceCollection _services;

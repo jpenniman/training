@@ -1,30 +1,20 @@
-﻿using System.Runtime.Serialization;
+﻿namespace Northwind.CustomerService.Domain;
 
-namespace Northwind.CustomerService.Api;
-
-[DataContract]
-public sealed class ContactInfo : IEquatable<ContactInfo>
+// DDD Value Type
+sealed class ContactInfo : IEquatable<ContactInfo>
 {
-    // Required for serializers.
-    ContactInfo() : this(null!)
-    { }
-
-    public ContactInfo(string phoneNumber)
+    public ContactInfo(string phoneNumber, string? name = null, string? title = null, string? faxNumber = null)
     {
+        Name = name;
+        Title = title;
         PhoneNumber = phoneNumber;
+        FaxNumber = faxNumber;
     }
 
-    [DataMember(Order = 1)]
-    public string? Name { get; set; }
-
-    [DataMember(Order = 2)]
-    public string? Title { get; set; }
-
-    [DataMember(Order = 3)]
-    public string PhoneNumber { get; set; }
-
-    [DataMember(Order = 4)]
-    public string? FaxNumber { get; set; }
+    public string? Name { get; }
+    public string? Title { get;}
+    public string PhoneNumber { get; }
+    public string? FaxNumber { get; }
 
     public bool Equals(ContactInfo? other)
     {

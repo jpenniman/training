@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Foundation", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerializationTests", "tests\SerializationTests\SerializationTests.csproj", "{D1902365-6E5B-4300-B8E5-80D75928D1F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Foundation.Api", "src\Northwind.Foundation.Api\Northwind.Foundation.Api.csproj", "{E734CA6E-2E49-4524-A1F0-12FC539E847A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Foundation.Server", "src\Northwind.Foundation.Server\Northwind.Foundation.Server.csproj", "{2655D204-2A1A-47BA-9346-220808A1DF0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,6 +20,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7EE93650-7875-4EBC-B172-215219485FB1} = {DA031E94-E412-435C-A9CC-B28F05BAF205}
 		{D1902365-6E5B-4300-B8E5-80D75928D1F3} = {3C0133B9-C272-4188-A736-D72B3416E6EA}
+		{E734CA6E-2E49-4524-A1F0-12FC539E847A} = {DA031E94-E412-435C-A9CC-B28F05BAF205}
+		{2655D204-2A1A-47BA-9346-220808A1DF0D} = {DA031E94-E412-435C-A9CC-B28F05BAF205}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7EE93650-7875-4EBC-B172-215219485FB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -26,5 +32,13 @@ Global
 		{D1902365-6E5B-4300-B8E5-80D75928D1F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1902365-6E5B-4300-B8E5-80D75928D1F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1902365-6E5B-4300-B8E5-80D75928D1F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E734CA6E-2E49-4524-A1F0-12FC539E847A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E734CA6E-2E49-4524-A1F0-12FC539E847A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E734CA6E-2E49-4524-A1F0-12FC539E847A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E734CA6E-2E49-4524-A1F0-12FC539E847A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2655D204-2A1A-47BA-9346-220808A1DF0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2655D204-2A1A-47BA-9346-220808A1DF0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2655D204-2A1A-47BA-9346-220808A1DF0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2655D204-2A1A-47BA-9346-220808A1DF0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

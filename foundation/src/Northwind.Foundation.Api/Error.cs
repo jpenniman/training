@@ -82,6 +82,9 @@ public sealed class Error : IEquatable<Error>
     /// </summary>
     [DataMember(Order = 4)] 
     public string Detail { get; }
+
+    [DataMember(Order = 5)]
+    public Dictionary<string, string> Metadata { get; set; } = new();
     
     ///<inheritdoc cref="IEquatable{T}.Equals(T)"/>
     public bool Equals(Error? other)

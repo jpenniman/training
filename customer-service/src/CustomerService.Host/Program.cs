@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Northwind.CustomerService.Lookup;
-using Northwind.Foundation.Grpc;
-using ProtoBuf.Grpc.Server;
+using Northwind.Foundation.Server;
 
 var builder = WebApplication.CreateBuilder(args)
     .AddGrpcServer()
@@ -16,9 +15,6 @@ builder.AddCustomerLookup(
 var app = builder.Build();
 
 app.UseRouting();
-
-// gRPC Schema Reflection Endpoint
-app.MapCodeFirstGrpcReflectionService();
 
 // Application Endpoints
 app.MapCustomerLookupGrpc();

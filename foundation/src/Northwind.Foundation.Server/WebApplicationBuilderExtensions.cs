@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.Configuration;
 using ProtoBuf.Grpc.Server;
 using Steeltoe.Management.Endpoint;
 
-namespace Northwind.Foundation.Grpc;
+namespace Northwind.Foundation.Server;
 
 public static class WebApplicationBuilderExtensions
 {
@@ -17,6 +19,7 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddCodeFirstGrpc();
         builder.Services.AddCodeFirstGrpcReflection();
         builder.Services.AddSingleton(BinderConfiguration.Create(binder: new DependencyInjectionServiceBinder(builder.Services)));
+        builder.Services.AddTransient<IStartupFilter, GrpcStartupFilter>();
         return builder;
     }
 

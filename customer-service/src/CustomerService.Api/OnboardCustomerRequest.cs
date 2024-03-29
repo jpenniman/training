@@ -1,11 +1,17 @@
 ﻿namespace Northwind.CustomerService.Api;
 
-public class OnboardCustomerRequest
+public sealed class OnboardCustomerRequest
 {
-    public OnboardCustomerRequest(string companyName)
+    public OnboardCustomerRequest(string companyName, Address address, ContactInfo contactInfo)
     {
         CompanyName = companyName;
+        Address = address;
+        ContactInfo = contactInfo;
     }
 
-    public string CompanyName { get; set; }
+    public string CompanyName { get; }
+    
+    public Address Address { get; }
+
+    public ContactInfo ContactInfo { get; }
 }

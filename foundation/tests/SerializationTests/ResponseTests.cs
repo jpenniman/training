@@ -38,7 +38,7 @@ public class ResponseTests
     [Fact]
     public void ProtobufWithData()
     {
-        var original = new Response<Foo>( new Foo() {Bar= "test"});
+        var original = new Response<Foo>(true, new Foo() {Bar= "test"});
         using var ms = new MemoryStream(); 
         ProtoBuf.Serializer.Serialize(ms, original);
         ms.Position = 0;
@@ -49,7 +49,7 @@ public class ResponseTests
     [Fact]
     public void ProtobufWithErrors()
     {
-        var original = new Response<string>(new[] { new Error("TEST_CODE", "Test Title", "Test Detail") });
+        var original = new Response<string>(false, errors: new[] { new Error("TEST_CODE", "Test Title", "Test Detail") });
         using var ms = new MemoryStream(); 
         ProtoBuf.Serializer.Serialize(ms, original);
         ms.Position = 0;
@@ -63,7 +63,7 @@ public class ResponseTests
         var options = new JsonSerializerOptions();
         options.Converters.Add(new Error.ErrorJsonConverter());
         
-        var original = new Response<string>(new[] { new Error("TEST_CODE", "Test Title", "Test Detail") });
+        var original = new Response<string>(false, errors: new[] { new Error("TEST_CODE", "Test Title", "Test Detail") });
         var json = JsonSerializer.Serialize(original, options);
         var deserialized = JsonSerializer.Deserialize<Response<string>>(json, options);
         deserialized.IsSuccessful.Should().BeFalse();

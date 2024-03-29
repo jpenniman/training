@@ -16,7 +16,7 @@ public interface ICustomerLookup
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [OperationContract]
-    Task<Response<Customer>> FindByCustomerNoAsync(FindByCustomerNoRequest request, CancellationToken cancellationToken = default);
+    Task<Response<Customer>> FindByCustomerNoAsync(FindByCustomerNumberRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a list of customers whose company name starts with the provided search term.
@@ -25,5 +25,5 @@ public interface ICustomerLookup
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [OperationContract]
-    Task<PagedResponse<Customer>> FindByCompanyNameAsync(FindByCompanyNameRequest request, CancellationToken cancellationToken = default);
+    Task<PagedResponse<CustomerLookupResult>> FindByCompanyNameAsync(FindByCompanyNameRequest request, CancellationToken cancellationToken = default);
 }

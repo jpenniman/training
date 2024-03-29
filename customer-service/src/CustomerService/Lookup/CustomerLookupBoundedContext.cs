@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Northwind.CustomerService.Api;
+using Northwind.CustomerService.Api.Lookup;
 
 namespace Northwind.CustomerService.Lookup;
 
@@ -22,8 +22,18 @@ sealed class CustomerLookupBoundedContext : DbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.HasDefaultSchema("customer_service");
 
+        var customerLookupResult = modelBuilder
+            .Entity<CustomerLookupResult>()
+            .ToView("customers");
+        customerLookupResult.HasNoKey();
+        customerLookupResult.Property(c => c.CustomerNumber).HasColumnName("customer_id");
+        customerLookupResult.Property(c => c.CompanyName);
+        customerLookupResult.Property(c => c.Country);
+        customerLookupResult.Property(c => c.Phone);
+        
         // Since the underlying table is the same table used by the Domain, we exclude it from Migrations here.
-        var customer = modelBuilder.Entity<Customer>()
+        var customer = modelBuilder
+            .Entity<Api.Customer>()
             .ToTable("customers", t => t.ExcludeFromMigrations());
         customer.HasKey(c => c.CustomerNumber);
 
