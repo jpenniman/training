@@ -33,6 +33,16 @@ CREATE TABLE customer_service.customers (
 	CONSTRAINT pk_customers PRIMARY KEY (customer_id) WITH (fillfactor = 50)
 );
 
+CREATE INDEX idx_customers_city ON customer_service.customers(city);
+CREATE INDEX idx_customers_company_name ON customer_service.customers(lower(company_name) varchar_pattern_ops);
+CREATE INDEX idx_customers_postal_code ON customer_service.customers(postal_code);
+CREATE INDEX idx_customers_region ON customer_service.customers(region);
+CREATE INDEX idx_customers_phone ON customer_service.customers(phone);
+
+GRANT USAGE ON SCHEMA customer_service to customer_owner;
+GRANT ALL ON ALL TABLES IN SCHEMA customer_service TO customer_owner;
+
+/* Seed data */
 INSERT INTO customer_service.customers (customer_id, company_name, contact_name, contact_title, address, city, region, postal_code, country, phone, fax)
 VALUES
      ('ALFKI','Alfreds Futterkiste','Maria Anders','Sales Representative','Obere Str. 57','Berlin',NULL,'12209','Germany','030-0074321','030-0076545')
@@ -125,12 +135,3 @@ VALUES
     ,('WELLI','Wellington Importadora','Paula Parente','Sales Manager','Rua do Mercado, 12','Resende','SP','08737-363','Brazil','(14) 555-8122',NULL)
     ,('WHITC','White Clover Markets','Karl Jablonski','Owner','305 - 14th Ave. S. Suite 3B','Seattle','WA','98128','USA','(206) 555-4112','(206) 555-4115')
     ,('WILMK','Wilman Kala','Matti Karttunen','Owner/Marketing Assistant','Keskuskatu 45','Helsinki',NULL,'21240','Finland','90-224 8858','90-224 8858');
-
-CREATE INDEX idx_customers_city ON customer_service.customers(city);
-CREATE INDEX idx_customers_company_name ON customer_service.customers(lower(company_name) varchar_pattern_ops);
-CREATE INDEX idx_customers_postal_code ON customer_service.customers(postal_code);
-CREATE INDEX idx_customers_region ON customer_service.customers(region);
-CREATE INDEX idx_customers_phone ON customer_service.customers(phone);
-
-GRANT USAGE ON SCHEMA customer_service to customer_owner;
-GRANT ALL ON ALL TABLES IN SCHEMA customer_service TO customer_owner;
