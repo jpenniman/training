@@ -1,0 +1,2 @@
+﻿CREATE TYPE [dbo].[CustomerIDType]
+	FROM NCHAR(5) NOT NULL
