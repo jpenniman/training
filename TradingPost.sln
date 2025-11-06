@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Northwind.TradingPost.Database\dbo\SampleData.sql = Northwind.TradingPost.Database\dbo\SampleData.sql
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.TradingPost.DataAccess", "Northwind.TradingPost.DataAccess\Northwind.TradingPost.DataAccess.csproj", "{478B5541-2D99-48B2-B8D9-973C7BE82C27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.TradingPost.Domain", "Northwind.TradingPost.Domain\Northwind.TradingPost.Domain.csproj", "{FE644F24-38F4-48E1-BDC7-46E52FBCBF64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,5 +21,13 @@ Global
 		{8BA19C71-74D1-4AC1-A174-11A0B1A08F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BA19C71-74D1-4AC1-A174-11A0B1A08F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BA19C71-74D1-4AC1-A174-11A0B1A08F14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{478B5541-2D99-48B2-B8D9-973C7BE82C27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{478B5541-2D99-48B2-B8D9-973C7BE82C27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{478B5541-2D99-48B2-B8D9-973C7BE82C27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{478B5541-2D99-48B2-B8D9-973C7BE82C27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE644F24-38F4-48E1-BDC7-46E52FBCBF64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE644F24-38F4-48E1-BDC7-46E52FBCBF64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE644F24-38F4-48E1-BDC7-46E52FBCBF64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE644F24-38F4-48E1-BDC7-46E52FBCBF64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
