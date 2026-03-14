@@ -16,10 +16,19 @@ namespace Northwind.TradingPost.Web.Controllers
             _reportingService = new ReportingService();
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, int pageSize = 10)
         {
-            var products = _productService.GetProductsByCategory(1);
-            return View(products);
+            if (page < 1) page = 1;
+            if (pageSize < 1) pageSize = 10;
+
+            var result = _productService.GetProductsPaged(page, pageSize);
+            
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalItems = result.TotalCount;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)result.TotalCount / pageSize);
+            
+            return View(result.Items);
         }
 
         public IActionResult Details(int id)

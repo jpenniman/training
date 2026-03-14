@@ -16,7 +16,7 @@ namespace Northwind.TradingPost.DataAccess
             cmd.Parameters.Add(new SqlParameter("@CustomerID", SqlDbType.NChar, 5){ Value = id });
             cn.Open();
             SqlDataReader rdr = cmd.ExecuteReader();
-            if (rdr.Read() != true)
+            if (rdr.Read())
             {
                 c = new Customer();
                 var customerIdOrdinal = rdr.GetOrdinal("CustomerID");

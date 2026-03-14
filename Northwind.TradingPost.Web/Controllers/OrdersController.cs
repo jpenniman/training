@@ -18,10 +18,19 @@ namespace Northwind.TradingPost.Web.Controllers
             _productService = new ProductService();
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, int pageSize = 10)
         {
-            var orders = _orderService.GetOrdersByCustomer("ALFKI");
-            return View(orders);
+            if (page < 1) page = 1;
+            if (pageSize < 1) pageSize = 10;
+
+            var result = _orderService.GetOrdersPaged(page, pageSize);
+            
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalItems = result.TotalCount;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)result.TotalCount / pageSize);
+            
+            return View(result.Items);
         }
 
         public IActionResult Details(int id)

@@ -1,0 +1,86 @@
+@model IEnumerable<Northwind.TradingPost.Domain.Customer>
+
+@{
+    ViewData["Title"] = "Customers";
+    int currentPage = ViewBag.CurrentPage;
+    int totalPages = ViewBag.TotalPages;
+    int pageSize = ViewBag.PageSize;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Customers</h1>
+    <a asp-action="Create" class="btn btn-primary">Add Customer</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Company Name</th>
+                    <th>Contact Name</th>
+                    <th>Title</th>
+                    <th>City</th>
+                    <th>Country</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-4">No customers found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var customer in Model)
+                    {
+                        <tr>
+                            <td>@customer.CustomerId</td>
+                            <td>@customer.CompanyName</td>
+                            <td>@customer.ContactName</td>
+                            <td>@customer.ContactTitle</td>
+                            <td>@customer.City</td>
+                            <td>@customer.Country</td>
+                            <td>@customer.Phone</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@customer.CustomerId" class="btn btn-sm btn-outline-primary">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (totalPages > 1)
+{
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-pageSize="@pageSize">First</a>
+            </li>
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-pageSize="@pageSize">Previous</a>
+            </li>
+            
+            @for (int i = Math.Max(1, currentPage - 2); i <= Math.Min(totalPages, currentPage + 2); i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-pageSize="@pageSize">@i</a>
+                </li>
+            }
+            
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-pageSize="@pageSize">Next</a>
+            </li>
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@totalPages" asp-route-pageSize="@pageSize">Last</a>
+            </li>
+        </ul>
+    </nav>
+}

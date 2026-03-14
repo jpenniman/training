@@ -1,0 +1,93 @@
+@model Northwind.TradingPost.Domain.Order
+
+@{
+    ViewData["Title"] = "Edit Order";
+}
+
+<h1>Edit Order</h1>
+
+<form asp-action="Edit" method="post">
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <input type="hidden" name="OrderId" value="@Model.OrderId" />
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Order ID</label>
+                    <input type="text" class="form-control" value="@Model.OrderId" readonly />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Customer ID</label>
+                    <input type="text" class="form-control" name="CustomerId" value="@Model.CustomerId" required />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Employee ID</label>
+                    <input type="number" class="form-control" name="EmployeeId" value="@Model.EmployeeId" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Order Date</label>
+                    <input type="date" class="form-control" name="OrderDate" value="@(Model.OrderDate?.ToString("yyyy-MM-dd"))" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Required Date</label>
+                    <input type="date" class="form-control" name="RequiredDate" value="@(Model.RequiredDate?.ToString("yyyy-MM-dd"))" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Shipped Date</label>
+                    <input type="date" class="form-control" name="ShippedDate" value="@(Model.ShippedDate?.ToString("yyyy-MM-dd"))" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ship Via</label>
+                    <input type="number" class="form-control" name="ShipVia" value="@Model.ShipVia" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Freight</label>
+                    <input type="number" step="0.01" class="form-control" name="Freight" value="@Model.Freight" />
+                </div>
+            </div>
+            <h5 class="mt-4 mb-3">Shipping Address</h5>
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <label class="form-label">Ship Name</label>
+                    <input type="text" class="form-control" name="ShipName" value="@Model.ShipName" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <label class="form-label">Ship Address</label>
+                    <input type="text" class="form-control" name="ShipAddress" value="@Model.ShipAddress" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ship City</label>
+                    <input type="text" class="form-control" name="ShipCity" value="@Model.ShipCity" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ship Region</label>
+                    <input type="text" class="form-control" name="ShipRegion" value="@Model.ShipRegion" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ship Postal Code</label>
+                    <input type="text" class="form-control" name="ShipPostalCode" value="@Model.ShipPostalCode" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ship Country</label>
+                    <input type="text" class="form-control" name="ShipCountry" value="@Model.ShipCountry" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </div>
+</form>

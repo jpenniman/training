@@ -203,6 +203,46 @@ namespace Northwind.TradingPost.Services
             return _orderDao.GetById(orderId);
         }
 
+        public (List<Order> Items, int TotalCount) GetOrdersPaged(int page, int pageSize)
+        {
+            var orders = new List<Order>();
+            int totalCount = 0;
+
+            using (var cn = GlobalApplicationHelper.GetDbConnection())
+            {
+                var countCmd = new SqlCommand("SELECT COUNT(*) FROM Orders", cn);
+                cn.Open();
+                totalCount = (int)countCmd.ExecuteScalar();
+
+                var cmd = new SqlCommand(@"
+                    SELECT o.*, c.CompanyName as CustomerName
+                    FROM Orders o
+                    LEFT JOIN Customers c ON o.CustomerID = c.CustomerID
+                    ORDER BY o.OrderDate DESC, o.OrderID DESC
+                    OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY", cn);
+                cmd.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+                cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+                var rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    var order = new Order();
+                    order.OrderId = Convert.ToInt32(rdr["OrderID"]);
+                    order.CustomerId = rdr["CustomerID"] != DBNull.Value ? rdr["CustomerID"].ToString() : null;
+                    order.EmployeeId = rdr["EmployeeID"] != DBNull.Value ? Convert.ToInt32(rdr["EmployeeID"]) : (int?)null;
+                    order.OrderDate = rdr["OrderDate"] != DBNull.Value ? Convert.ToDateTime(rdr["OrderDate"]) : (DateTime?)null;
+                    order.RequiredDate = rdr["RequiredDate"] != DBNull.Value ? Convert.ToDateTime(rdr["RequiredDate"]) : (DateTime?)null;
+                    order.ShippedDate = rdr["ShippedDate"] != DBNull.Value ? Convert.ToDateTime(rdr["ShippedDate"]) : (DateTime?)null;
+                    order.Freight = rdr["Freight"] != DBNull.Value ? Convert.ToDecimal(rdr["Freight"]) : (decimal?)null;
+                    order.ShipName = rdr["ShipName"] != DBNull.Value ? rdr["ShipName"].ToString() : null;
+                    order.ShipCity = rdr["ShipCity"] != DBNull.Value ? rdr["ShipCity"].ToString() : null;
+                    order.ShipCountry = rdr["ShipCountry"] != DBNull.Value ? rdr["ShipCountry"].ToString() : null;
+                    orders.Add(order);
+                }
+            }
+            return (orders, totalCount);
+        }
+
         public bool ProcessShipment(int orderId, int shipperId, string trackingNumber)
         {
             var order = _orderDao.GetById(orderId);
@@ -358,6 +398,41 @@ namespace Northwind.TradingPost.Services
             }
             return customers;
         }
+
+        public (List<Customer> Items, int TotalCount) GetCustomersPaged(int page, int pageSize)
+        {
+            var customers = new List<Customer>();
+            int totalCount = 0;
+
+            using (var cn = GlobalApplicationHelper.GetDbConnection())
+            {
+                var countCmd = new SqlCommand("SELECT COUNT(*) FROM Customers", cn);
+                cn.Open();
+                totalCount = (int)countCmd.ExecuteScalar();
+
+                var cmd = new SqlCommand(@"
+                    SELECT * FROM Customers
+                    ORDER BY CompanyName
+                    OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY", cn);
+                cmd.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+                cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+                var rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    var customer = new Customer();
+                    customer.CustomerId = rdr["CustomerID"].ToString();
+                    customer.CompanyName = rdr["CompanyName"].ToString();
+                    customer.ContactName = rdr.IsDBNull("ContactName") ? null : rdr["ContactName"].ToString();
+                    customer.ContactTitle = rdr.IsDBNull("ContactTitle") ? null : rdr["ContactTitle"].ToString();
+                    customer.City = rdr.IsDBNull("City") ? null : rdr["City"].ToString();
+                    customer.Country = rdr.IsDBNull("Country") ? null : rdr["Country"].ToString();
+                    customer.Phone = rdr.IsDBNull("Phone") ? null : rdr["Phone"].ToString();
+                    customers.Add(customer);
+                }
+            }
+            return (customers, totalCount);
+        }
     }
 
     public class ProductService
@@ -490,6 +565,47 @@ namespace Northwind.TradingPost.Services
         public Product GetProductById(int productId)
         {
             return _productDao.GetById(productId);
+        }
+
+        public (List<Product> Items, int TotalCount) GetProductsPaged(int page, int pageSize)
+        {
+            var products = new List<Product>();
+            int totalCount = 0;
+
+            using (var cn = GlobalApplicationHelper.GetDbConnection())
+            {
+                var countCmd = new SqlCommand("SELECT COUNT(*) FROM Products", cn);
+                cn.Open();
+                totalCount = (int)countCmd.ExecuteScalar();
+
+                var cmd = new SqlCommand(@"
+                    SELECT p.*, c.CategoryName, s.CompanyName as SupplierName
+                    FROM Products p
+                    LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
+                    LEFT JOIN Suppliers s ON p.SupplierID = s.SupplierID
+                    ORDER BY p.ProductName
+                    OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY", cn);
+                cmd.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+                cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+                var rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    var product = new Product();
+                    product.ProductId = Convert.ToInt32(rdr["ProductID"]);
+                    product.ProductName = rdr["ProductName"].ToString();
+                    product.SupplierId = rdr["SupplierID"] != DBNull.Value ? Convert.ToInt32(rdr["SupplierID"]) : (int?)null;
+                    product.CategoryId = rdr["CategoryID"] != DBNull.Value ? Convert.ToInt32(rdr["CategoryID"]) : (int?)null;
+                    product.QuantityPerUnit = rdr["QuantityPerUnit"] != DBNull.Value ? rdr["QuantityPerUnit"].ToString() : null;
+                    product.UnitPrice = rdr["UnitPrice"] != DBNull.Value ? Convert.ToDecimal(rdr["UnitPrice"]) : (decimal?)null;
+                    product.UnitsInStock = Convert.ToInt16(rdr["UnitsInStock"]);
+                    product.UnitsOnOrder = Convert.ToInt16(rdr["UnitsOnOrder"]);
+                    product.ReorderLevel = Convert.ToInt16(rdr["ReorderLevel"]);
+                    product.Discontinued = Convert.ToBoolean(rdr["Discontinued"]);
+                    products.Add(product);
+                }
+            }
+            return (products, totalCount);
         }
     }
 

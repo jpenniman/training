@@ -9,5 +9,5 @@ as
     insert into [Categories] ([CategoryName],[Description],[Picture])
     values(@CategoryName,@Description,@Picture);
     
-    select @CategoryID = @@SCOPE_IDENTITY;
+    select @CategoryID = SCOPE_IDENTITY();
 GO

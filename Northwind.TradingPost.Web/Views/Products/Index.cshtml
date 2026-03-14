@@ -1,0 +1,103 @@
+@model IEnumerable<Northwind.TradingPost.Domain.Product>
+
+@{
+    ViewData["Title"] = "Products";
+    int currentPage = ViewBag.CurrentPage;
+    int totalPages = ViewBag.TotalPages;
+    int pageSize = ViewBag.PageSize;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Products</h1>
+    <a asp-action="Create" class="btn btn-primary">Add Product</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Product Name</th>
+                    <th>Supplier</th>
+                    <th>Category</th>
+                    <th>Qty/Unit</th>
+                    <th>Unit Price</th>
+                    <th>In Stock</th>
+                    <th>On Order</th>
+                    <th>Reorder Level</th>
+                    <th>Discontinued</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="11" class="text-center text-muted py-4">No products found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var product in Model)
+                    {
+                        <tr>
+                            <td>@product.ProductId</td>
+                            <td>@product.ProductName</td>
+                            <td>@product.SupplierId</td>
+                            <td>@product.CategoryId</td>
+                            <td>@product.QuantityPerUnit</td>
+                            <td>@(product.UnitPrice?.ToString("C") ?? "-")</td>
+                            <td>
+                                <span class="@(product.UnitsInStock < 10 ? "text-danger fw-bold" : "")">@product.UnitsInStock</span>
+                            </td>
+                            <td>@product.UnitsOnOrder</td>
+                            <td>@product.ReorderLevel</td>
+                            <td>
+                                @if (product.Discontinued)
+                                {
+                                    <span class="badge bg-danger">Yes</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">No</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@product.ProductId" class="btn btn-sm btn-outline-primary">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (totalPages > 1)
+{
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-pageSize="@pageSize">First</a>
+            </li>
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-pageSize="@pageSize">Previous</a>
+            </li>
+            
+            @for (int i = Math.Max(1, currentPage - 2); i <= Math.Min(totalPages, currentPage + 2); i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-pageSize="@pageSize">@i</a>
+                </li>
+            }
+            
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-pageSize="@pageSize">Next</a>
+            </li>
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@totalPages" asp-route-pageSize="@pageSize">Last</a>
+            </li>
+        </ul>
+    </nav>
+}

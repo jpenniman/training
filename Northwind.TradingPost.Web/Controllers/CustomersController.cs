@@ -13,18 +13,20 @@ namespace Northwind.TradingPost.Web.Controllers
             _customerService = new CustomerService();
         }
 
-        public IActionResult Index(string search = "")
+        public IActionResult Index(int page = 1, int pageSize = 10)
         {
-            if (string.IsNullOrEmpty(search))
-            {
-                var customers = _customerService.SearchCustomers("");
-                return View(customers);
-            }
-            else
-            {
-                var customers = _customerService.SearchCustomers(search);
-                return View(customers);
-            }
+            const int defaultPageSize = 10;
+            if (page < 1) page = 1;
+            if (pageSize < 1) pageSize = defaultPageSize;
+
+            var result = _customerService.GetCustomersPaged(page, pageSize);
+            
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalItems = result.TotalCount;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)result.TotalCount / pageSize);
+            
+            return View(result.Items);
         }
 
         public IActionResult Details(string id)
