@@ -68,11 +68,23 @@ namespace Northwind.TradingPost.Web.Controllers
             return View(order);
         }
 
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int id, int detailsPage = 1, int detailsPageSize = 10, string activeTab = "order")
         {
             var order = _orderService.GetOrderById(id);
             if (order == null)
                 return NotFound();
+
+            if (detailsPage < 1) detailsPage = 1;
+            if (detailsPageSize < 1) detailsPageSize = 5;
+
+            var result = _orderService.GetOrderDetailsPaged(id, detailsPage, detailsPageSize);
+            
+            ViewBag.DetailsCurrentPage = detailsPage;
+            ViewBag.DetailsPageSize = detailsPageSize;
+            ViewBag.DetailsTotalItems = result.TotalCount;
+            ViewBag.DetailsTotalPages = (int)Math.Ceiling((double)result.TotalCount / detailsPageSize);
+            ViewBag.OrderDetails = result.Items;
+            ViewBag.ActiveTab = activeTab;
 
             return View(order);
         }

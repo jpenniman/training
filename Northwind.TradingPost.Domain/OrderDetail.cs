@@ -7,6 +7,7 @@ namespace Northwind.TradingPost.Domain
     {
         private int _orderId;
         private int _productId;
+        private string _productName;
         private decimal _unitPrice;
         private short _quantity;
         private float _discount;
@@ -27,6 +28,15 @@ namespace Northwind.TradingPost.Domain
         {
             get { return _productId; }
             set { _productId = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the product name.
+        /// </summary>
+        public string ProductName
+        {
+            get { return _productName; }
+            set { _productName = value; }
         }
 
         /// <summary>

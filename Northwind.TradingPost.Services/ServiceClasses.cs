@@ -180,7 +180,11 @@ namespace Northwind.TradingPost.Services
             var details = new List<OrderDetail>();
             using (var cn = GlobalApplicationHelper.GetDbConnection())
             {
-                var cmd = new SqlCommand("SELECT * FROM [Order Details] WHERE OrderID = @OrderID", cn);
+                var cmd = new SqlCommand(@"
+                    SELECT od.*, p.ProductName 
+                    FROM [Order Details] od
+                    JOIN Products p ON od.ProductID = p.ProductID
+                    WHERE od.OrderID = @OrderID", cn);
                 cmd.Parameters.AddWithValue("@OrderID", orderId);
                 cn.Open();
                 var rdr = cmd.ExecuteReader();
@@ -189,6 +193,7 @@ namespace Northwind.TradingPost.Services
                     var detail = new OrderDetail();
                     detail.OrderId = Convert.ToInt32(rdr["OrderID"]);
                     detail.ProductId = Convert.ToInt32(rdr["ProductID"]);
+                    detail.ProductName = rdr["ProductName"].ToString();
                     detail.UnitPrice = Convert.ToDecimal(rdr["UnitPrice"]);
                     detail.Quantity = Convert.ToInt16(rdr["Quantity"]);
                     detail.Discount = Convert.ToSingle(rdr["Discount"]);
@@ -196,6 +201,46 @@ namespace Northwind.TradingPost.Services
                 }
             }
             return details;
+        }
+
+        public (List<OrderDetail> Items, int TotalCount) GetOrderDetailsPaged(int orderId, int page, int pageSize)
+        {
+            var details = new List<OrderDetail>();
+            int totalCount = 0;
+
+            using (var cn = GlobalApplicationHelper.GetDbConnection())
+            {
+                var countCmd = new SqlCommand("SELECT COUNT(*) FROM [Order Details] WHERE OrderID = @OrderID", cn);
+                countCmd.Parameters.AddWithValue("@OrderID", orderId);
+                cn.Open();
+                totalCount = (int)countCmd.ExecuteScalar();
+                cn.Close();
+
+                var cmd = new SqlCommand(@"
+                    SELECT od.*, p.ProductName 
+                    FROM [Order Details] od
+                    JOIN Products p ON od.ProductID = p.ProductID
+                    WHERE od.OrderID = @OrderID
+                    ORDER BY od.ProductID
+                    OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY", cn);
+                cmd.Parameters.AddWithValue("@OrderID", orderId);
+                cmd.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+                cmd.Parameters.AddWithValue("@PageSize", pageSize);
+                cn.Open();
+                var rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    var detail = new OrderDetail();
+                    detail.OrderId = Convert.ToInt32(rdr["OrderID"]);
+                    detail.ProductId = Convert.ToInt32(rdr["ProductID"]);
+                    detail.ProductName = rdr["ProductName"].ToString();
+                    detail.UnitPrice = Convert.ToDecimal(rdr["UnitPrice"]);
+                    detail.Quantity = Convert.ToInt16(rdr["Quantity"]);
+                    detail.Discount = Convert.ToSingle(rdr["Discount"]);
+                    details.Add(detail);
+                }
+            }
+            return (details, totalCount);
         }
 
         public Order GetOrderById(int orderId)
