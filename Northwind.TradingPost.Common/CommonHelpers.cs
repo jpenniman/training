@@ -77,11 +77,11 @@ namespace Northwind.TradingPost.Common
 
         public static void SendEmail(string to, string subject, string body)
         {
-            using (var client = new SmtpClient(_smtpServer, _smtpPort))
-            {
-                var message = new MailMessage(_emailFrom, to, subject, body);
-                client.Send(message);
-            }
+            // using (var client = new SmtpClient(_smtpServer, _smtpPort))
+            // {
+            //     var message = new MailMessage(_emailFrom, to, subject, body);
+            //     client.Send(message);
+            // }
         }
 
         public static void LogError(Exception ex, string context = "")

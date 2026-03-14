@@ -68,6 +68,9 @@ namespace Northwind.TradingPost.Web.Controllers
             if (product == null)
                 return NotFound();
 
+            var categories = _productService.GetCategories();
+            ViewBag.Categories = categories;
+
             return View(product);
         }
 

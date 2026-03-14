@@ -652,6 +652,12 @@ namespace Northwind.TradingPost.Services
             }
             return (products, totalCount);
         }
+
+        public List<Category> GetCategories()
+        {
+            var categoryDao = new CategoryDAO();
+            return categoryDao.GetAll();
+        }
     }
 
     public class ReportingService

@@ -91,5 +91,29 @@ namespace Northwind.TradingPost.DataAccess
             cn.Dispose();
             return true;
         }
+
+        public List<Category> GetAll()
+        {
+            var categories = new List<Category>();
+            SqlConnection cn = ConnectionHelper.GetConnection();
+            SqlCommand cmd = new SqlCommand("SELECT CategoryID, CategoryName FROM Categories ORDER BY CategoryName", cn);
+            cmd.CommandType = CommandType.Text;
+            
+            cn.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                var c = new Category();
+                c.CategoryId = Convert.ToInt32(rdr["CategoryID"]);
+                c.CategoryName = Convert.ToString(rdr["CategoryName"]);
+                categories.Add(c);
+            }
+            rdr.Close();
+            rdr.Dispose();
+            cmd.Dispose();
+            cn.Close();
+            cn.Dispose();
+            return categories;
+        }
     }
 }
