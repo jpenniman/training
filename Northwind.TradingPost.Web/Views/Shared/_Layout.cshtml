@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"] - Northwind Traders</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        nav { background: #f0f0f0; padding: 10px; margin-bottom: 20px; }
+        nav a { margin-right: 15px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/Orders">Orders</a>
+        <a href="/Customers">Customers</a>
+        <a href="/Products">Products</a>
+    </nav>
+    @RenderBody()
+</body>
+</html>

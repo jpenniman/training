@@ -1,4 +1,4 @@
-﻿namespace Northwind.TradingPost.Domain
+namespace Northwind.TradingPost.Domain
 {
     public class Customer
     {
@@ -13,6 +13,7 @@
         string _country;
         string _phone;
         string _fax;
+        string _email;
 
         public string CustomerId
         {
@@ -78,6 +79,12 @@
         {
             get { return _fax; }
             set { _fax = value; }
+        }
+
+        public string Email
+        {
+            get { return _email; }
+            set { _email = value; }
         }
     }
 }

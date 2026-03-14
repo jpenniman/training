@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.8" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Northwind.TradingPost.Domain\Northwind.TradingPost.Domain.csproj" />
+    <ProjectReference Include="..\Northwind.TradingPost.DataAccess\Northwind.TradingPost.DataAccess.csproj" />
+    <ProjectReference Include="..\Northwind.TradingPost.Common\Northwind.TradingPost.Common.csproj" />
+    <ProjectReference Include="..\Northwind.TradingPost.Services\Northwind.TradingPost.Services.csproj" />
+  </ItemGroup>
+
+</Project>
