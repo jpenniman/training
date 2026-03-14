@@ -1,0 +1,217 @@
+@model Northwind.TradingPost.Domain.Order
+
+@{
+    ViewData["Title"] = "Create Order";
+    var customers = (IEnumerable<Northwind.TradingPost.Domain.Customer>)ViewBag.Customers;
+    var products = (IEnumerable<Northwind.TradingPost.Domain.Product>)ViewBag.Products;
+    var shippers = (IEnumerable<Northwind.TradingPost.Domain.Shipper>)ViewBag.Shippers;
+}
+
+<h1>Create Order</h1>
+
+<form asp-action="Create" method="post" id="orderForm">
+    <div class="card shadow-sm mt-4">
+        <div class="card-header">
+            <h5 class="mb-0">Order Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Customer</label>
+                    <select class="form-select" name="CustomerId" required>
+                        <option value="">-- Select Customer --</option>
+                        @foreach (var customer in customers)
+                        {
+                            <option value="@customer.CustomerId">@customer.CompanyName (@customer.CustomerId)</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Employee ID</label>
+                    <input type="number" class="form-control" name="EmployeeId" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Order Date</label>
+                    <input type="date" class="form-control" name="OrderDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Required Date</label>
+                    <input type="date" class="form-control" name="RequiredDate" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ship Via</label>
+                    <select class="form-select" name="ShipVia">
+                        <option value="">-- Select Shipper --</option>
+                        @foreach (var shipper in shippers)
+                        {
+                            <option value="@shipper.ShipperId">@shipper.CompanyName</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Freight</label>
+                    <input type="number" step="0.01" class="form-control" name="Freight" value="0" />
+                </div>
+            </div>
+
+            <h5 class="mt-4 mb-3">Shipping Address</h5>
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <label class="form-label">Ship Name</label>
+                    <input type="text" class="form-control" name="ShipName" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <label class="form-label">Ship Address</label>
+                    <input type="text" class="form-control" name="ShipAddress" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ship City</label>
+                    <input type="text" class="form-control" name="ShipCity" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ship Region</label>
+                    <input type="text" class="form-control" name="ShipRegion" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ship Postal Code</label>
+                    <input type="text" class="form-control" name="ShipPostalCode" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ship Country</label>
+                    <input type="text" class="form-control" name="ShipCountry" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Order Items</h5>
+            <button type="button" class="btn btn-sm btn-success" onclick="addOrderItem()">+ Add Item</button>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0" id="orderItemsTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Product</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Discount (%)</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="orderItemsBody">
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                        <td><span id="orderTotal">$0.00</span></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <button type="submit" class="btn btn-primary">Create Order</button>
+    </div>
+</form>
+
+<script>
+    const products = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(products.Select(p => new { p.ProductId, p.ProductName, p.UnitPrice }), new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase }));
+
+    function addOrderItem() {
+        const tbody = document.getElementById('orderItemsBody');
+        const rowCount = tbody.children.length;
+        const row = document.createElement('tr');
+        
+        let productOptions = '<option value="">-- Select Product --</option>';
+        products.forEach(p => {
+            productOptions += `<option value="${p.productId}" data-price="${p.unitPrice || 0}">${p.productName}</option>`;
+        });
+
+        row.innerHTML = `
+            <td>
+                <select class="form-select product-select" name="orderDetails[${rowCount}].ProductId" onchange="updatePrice(this)" required>
+                    ${productOptions}
+                </select>
+            </td>
+            <td>
+                <input type="number" step="0.01" class="form-control unit-price" name="orderDetails[${rowCount}].UnitPrice" value="0" onchange="updateSubtotal(this)" />
+            </td>
+            <td>
+                <input type="number" class="form-control quantity" name="orderDetails[${rowCount}].Quantity" value="1" min="1" onchange="updateSubtotal(this)" />
+            </td>
+            <td>
+                <input type="number" class="form-control discount" name="orderDetails[${rowCount}].Discount" value="0" min="0" max="100" onchange="updateSubtotal(this)" />
+            </td>
+            <td>
+                <span class="subtotal">$0.00</span>
+            </td>
+            <td>
+                <button type="button" class="btn btn-sm btn-danger" onclick="removeRow(this)">X</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    }
+
+    function updatePrice(selectElem) {
+        const row = selectElem.closest('tr');
+        const selectedOption = selectElem.options[selectElem.selectedIndex];
+        const price = selectedOption.dataset.price || 0;
+        row.querySelector('.unit-price').value = price;
+        updateSubtotal(selectElem);
+    }
+
+    function updateSubtotal(elem) {
+        const row = elem.closest('tr');
+        const unitPrice = parseFloat(row.querySelector('.unit-price').value) || 0;
+        const quantity = parseInt(row.querySelector('.quantity').value) || 0;
+        const discount = parseFloat(row.querySelector('.discount').value) || 0;
+        const subtotal = unitPrice * quantity * (1 - discount / 100);
+        row.querySelector('.subtotal').textContent = '$' + subtotal.toFixed(2);
+        updateTotal();
+    }
+
+    function removeRow(btn) {
+        btn.closest('tr').remove();
+        updateTotal();
+        reindexRows();
+    }
+
+    function reindexRows() {
+        const rows = document.querySelectorAll('#orderItemsBody tr');
+        rows.forEach((row, index) => {
+            row.querySelector('.product-select').name = `orderDetails[${index}].ProductId`;
+            row.querySelector('.unit-price').name = `orderDetails[${index}].UnitPrice`;
+            row.querySelector('.quantity').name = `orderDetails[${index}].Quantity`;
+            row.querySelector('.discount').name = `orderDetails[${index}].Discount`;
+        });
+    }
+
+    function updateTotal() {
+        const subtotals = document.querySelectorAll('.subtotal');
+        let total = 0;
+        subtotals.forEach(s => {
+            const value = parseFloat(s.textContent.replace('$', '')) || 0;
+            total += value;
+        });
+        document.getElementById('orderTotal').textContent = '$' + total.toFixed(2);
+    }
+
+    // Add one empty row by default
+    addOrderItem();
+</script>

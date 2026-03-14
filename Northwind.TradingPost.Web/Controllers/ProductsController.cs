@@ -42,6 +42,8 @@ namespace Northwind.TradingPost.Web.Controllers
 
         public IActionResult Create()
         {
+            var categories = _productService.GetCategories();
+            ViewBag.Categories = categories;
             return View();
         }
 

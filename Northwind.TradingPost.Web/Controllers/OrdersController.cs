@@ -47,24 +47,52 @@ namespace Northwind.TradingPost.Web.Controllers
         public IActionResult Create()
         {
             ViewBag.Customers = _customerService.SearchCustomers("");
+            ViewBag.Products = _productService.GetProductsPaged(1, 100).Items;
+            ViewBag.Shippers = GetAllShippers();
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Order order)
+        public IActionResult Create(Order order, List<OrderDetail> orderDetails)
         {
-            if (!_orderService.ValidateOrder(order))
+            if (orderDetails == null)
+                orderDetails = new List<OrderDetail>();
+
+            if (string.IsNullOrEmpty(order.CustomerId))
             {
-                ModelState.AddModelError("", "Invalid order data");
+                ModelState.AddModelError("", "Customer is required");
+                ViewBag.Customers = _customerService.SearchCustomers("");
+                ViewBag.Products = _productService.GetProductsPaged(1, 100).Items;
+                ViewBag.Shippers = GetAllShippers();
                 return View(order);
             }
 
-            var details = new List<OrderDetail>();
-            bool result = _orderService.CreateOrder(order, details);
+            if (!_orderService.ValidateOrder(order))
+            {
+                ModelState.AddModelError("", "Invalid order data");
+                ViewBag.Customers = _customerService.SearchCustomers("");
+                ViewBag.Products = _productService.GetProductsPaged(1, 100).Items;
+                ViewBag.Shippers = GetAllShippers();
+                return View(order);
+            }
+
+            if (orderDetails.Count == 0)
+            {
+                ModelState.AddModelError("", "At least one order item is required");
+                ViewBag.Customers = _customerService.SearchCustomers("");
+                ViewBag.Products = _productService.GetProductsPaged(1, 100).Items;
+                ViewBag.Shippers = GetAllShippers();
+                return View(order);
+            }
+
+            bool result = _orderService.CreateOrder(order, orderDetails);
 
             if (result)
                 return RedirectToAction("Index");
 
+            ViewBag.Customers = _customerService.SearchCustomers("");
+            ViewBag.Products = _productService.GetProductsPaged(1, 100).Items;
+            ViewBag.Shippers = GetAllShippers();
             return View(order);
         }
 

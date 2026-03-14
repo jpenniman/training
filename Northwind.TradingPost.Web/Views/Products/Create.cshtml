@@ -1,31 +1,29 @@
 @model Northwind.TradingPost.Domain.Product
 
 @{
-    ViewData["Title"] = "Edit Product";
+    ViewData["Title"] = "Create Product";
     var categories = (IEnumerable<Northwind.TradingPost.Domain.Category>)ViewBag.Categories;
 }
 
-<h1>Edit Product</h1>
+<h1>Create Product</h1>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Create" method="post">
     <div class="card shadow-sm mt-4">
         <div class="card-body">
-            <input type="hidden" name="ProductId" value="@Model.ProductId" />
-            
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Product ID</label>
-                    <input type="text" class="form-control" value="@Model.ProductId" readonly />
+                    <label class="form-label">Product Name</label>
+                    <input type="text" class="form-control" name="ProductName" required />
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Product Name</label>
-                    <input type="text" class="form-control" name="ProductName" value="@Model.ProductName" required />
+                    <label class="form-label">Unit Price</label>
+                    <input type="number" step="0.01" class="form-control" name="UnitPrice" required />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Supplier ID</label>
-                    <input type="number" class="form-control" name="SupplierId" value="@Model.SupplierId" />
+                    <input type="number" class="form-control" name="SupplierId" />
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Category</label>
@@ -33,7 +31,7 @@
                         <option value="">-- Select Category --</option>
                         @foreach (var category in categories)
                         {
-                            <option value="@category.CategoryId" selected="@(Model.CategoryId == category.CategoryId ? "selected" : null)">@category.CategoryName</option>
+                            <option value="@category.CategoryId">@category.CategoryName</option>
                         }
                     </select>
                 </div>
@@ -41,32 +39,28 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Quantity Per Unit</label>
-                    <input type="text" class="form-control" name="QuantityPerUnit" value="@Model.QuantityPerUnit" />
+                    <input type="text" class="form-control" name="QuantityPerUnit" />
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Unit Price</label>
-                    <input type="number" step="0.01" class="form-control" name="UnitPrice" value="@Model.UnitPrice" />
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Units In Stock</label>
-                    <input type="number" class="form-control" name="UnitsInStock" value="@Model.UnitsInStock" />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Units On Order</label>
-                    <input type="number" class="form-control" name="UnitsOnOrder" value="@Model.UnitsOnOrder" />
+                    <input type="number" class="form-control" name="UnitsInStock" value="0" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Reorder Level</label>
-                    <input type="number" class="form-control" name="ReorderLevel" value="@Model.ReorderLevel" />
+                    <label class="form-label">Units On Order</label>
+                    <input type="number" class="form-control" name="UnitsOnOrder" value="0" />
                 </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Reorder Level</label>
+                    <input type="number" class="form-control" name="ReorderLevel" value="0" />
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Discontinued</label>
                     <div class="form-check mt-2">
-                        <input type="checkbox" class="form-check-input" name="Discontinued" value="true" @(Model.Discontinued ? "checked" : "") />
+                        <input type="checkbox" class="form-check-input" name="Discontinued" value="true" />
                         <label class="form-check-label">Product is discontinued</label>
                     </div>
                 </div>
@@ -74,7 +68,7 @@
         </div>
         <div class="card-footer d-flex justify-content-between">
             <a asp-controller="Products" asp-action="Index" class="btn btn-secondary">Back to List</a>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="submit" class="btn btn-primary">Create Product</button>
         </div>
     </div>
 </form>

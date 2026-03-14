@@ -1,75 +1,81 @@
 @model Northwind.TradingPost.Domain.Customer
 
 @{
-    ViewData["Title"] = "Edit Customer";
+    ViewData["Title"] = "Create Customer";
 }
 
-<h1>Edit Customer</h1>
+<h1>Create Customer</h1>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Create" method="post">
     <div class="card shadow-sm mt-4">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Customer ID</label>
-                    <input type="text" class="form-control" value="@Model.CustomerId" readonly />
-                    <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
+                    <input type="text" class="form-control" name="CustomerId" maxlength="5" required />
+                    <small class="text-muted">5 characters required</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Company Name</label>
-                    <input type="text" class="form-control" name="CompanyName" value="@Model.CompanyName" required />
+                    <input type="text" class="form-control" name="CompanyName" required />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Contact Name</label>
-                    <input type="text" class="form-control" name="ContactName" value="@Model.ContactName" />
+                    <input type="text" class="form-control" name="ContactName" />
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Contact Title</label>
-                    <input type="text" class="form-control" name="ContactTitle" value="@Model.ContactTitle" />
+                    <input type="text" class="form-control" name="ContactTitle" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 mb-3">
                     <label class="form-label">Address</label>
-                    <input type="text" class="form-control" name="Address" value="@Model.Address" />
+                    <input type="text" class="form-control" name="Address" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">City</label>
-                    <input type="text" class="form-control" name="City" value="@Model.City" />
+                    <input type="text" class="form-control" name="City" />
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Region</label>
-                    <input type="text" class="form-control" name="Region" value="@Model.Region" />
+                    <input type="text" class="form-control" name="Region" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Postal Code</label>
-                    <input type="text" class="form-control" name="PostalCode" value="@Model.PostalCode" />
+                    <input type="text" class="form-control" name="PostalCode" />
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Country</label>
-                    <input type="text" class="form-control" name="Country" value="@Model.Country" />
+                    <input type="text" class="form-control" name="Country" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Phone</label>
-                    <input type="text" class="form-control" name="Phone" value="@Model.Phone" />
+                    <input type="text" class="form-control" name="Phone" />
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Fax</label>
-                    <input type="text" class="form-control" name="Fax" value="@Model.Fax" />
+                    <input type="text" class="form-control" name="Fax" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" name="Email" />
                 </div>
             </div>
         </div>
         <div class="card-footer d-flex justify-content-between">
             <a asp-controller="Customers" asp-action="Index" class="btn btn-secondary">Back to List</a>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="submit" class="btn btn-primary">Create Customer</button>
         </div>
     </div>
 </form>
